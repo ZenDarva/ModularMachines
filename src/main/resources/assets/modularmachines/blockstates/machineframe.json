@@ -1,0 +1,31 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "modularmachines:machineframe",
+    "textures": {
+      "front": "modularmachines:blocks/machine_front"
+    }
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": {
+      "model": "modularmachines:machineframe"
+    },
+    "running": {
+      "false": {},
+      "true": {
+        "textures": {
+          "front": "modularmachines:blocks/machine_front_on"
+        }
+      }
+    },
+    "facing": {
+      "east":{},
+      "west":{"y":180},
+      "south":{"y":90},
+      "north":{"y":270}
+    }
+  }
+}
