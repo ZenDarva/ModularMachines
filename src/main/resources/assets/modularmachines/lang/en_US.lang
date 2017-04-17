@@ -1,0 +1,12 @@
+tile.modularmachines.machineframe.name=Modular Framework
+inputmodule.name=Input Module
+furnacemodule.name=Furnace Module
+blockmodule.name=Block Module
+breakmodule.name=Break Module
+crushermodule.name=Crusher Module
+itemfindermodule.name=Item Finder Module
+killermodule.name=Killer Module
+locationmodule.name=Location Module
+mobfindermodule.name=Mob Finder Module
+pipemodule.name=Pipe Module
+placemodule.name=Place Module
