@@ -6,5 +6,6 @@ public enum IOType {
     BlockPos,
     EntityLiving,
     None,
+    Any,
 
 }

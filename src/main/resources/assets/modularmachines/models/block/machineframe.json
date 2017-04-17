@@ -2,11 +2,11 @@
   "parent": "block/cube",
   "textures": {
     "particle": "modularmachines:blocks/machine_side",
-    "west": "modularmachines:blocks/machine_back",
+    "west": "modularmachines:blocks/machine_side",
     "east": "#front",
     "north": "modularmachines:blocks/machine_side",
     "south": "modularmachines:blocks/machine_side",
     "up": "modularmachines:blocks/machine_top",
-    "down": "modularmachines:blocks/machine_bottom"
+    "down": "modularmachines:blocks/machine_side"
   }
 }

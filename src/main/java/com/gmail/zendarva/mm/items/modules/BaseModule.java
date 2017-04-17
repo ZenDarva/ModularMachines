@@ -2,17 +2,26 @@ package com.gmail.zendarva.mm.items.modules;
 
 import com.gmail.zendarva.mm.IOType;
 import com.gmail.zendarva.mm.OutputDir;
+import com.gmail.zendarva.mm.entities.MachineFrameEntity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
 public abstract class BaseModule {
     public IOType requires(){ return IOType.None;};
     public IOType provides(){ return IOType.None;};
-    public abstract int rfPerTick();
-    public abstract int progress();
+    public int rfPerTick;
+    public int progress;
     public String unlocalizedName;
+
+
 
     public void setSuccess(ItemStack stack, OutputDir dir){
         validateCompound(stack);
@@ -21,7 +30,7 @@ public abstract class BaseModule {
     public OutputDir getSuccess(ItemStack stack){
         validateCompound(stack);
         String value = stack.getTagCompound().getString("success");
-        if (value == null) {
+        if (value == null || value == "") {
             setSuccess(stack, OutputDir.none);
             value = "none";
         }
@@ -34,7 +43,7 @@ public abstract class BaseModule {
     public OutputDir getFailure(ItemStack stack){
         validateCompound(stack);
         String value = stack.getTagCompound().getString("failure");
-        if (value == null) {
+        if (value == null || value == "") {
             setFailure(stack, OutputDir.none);
             value = "none";
         }
@@ -46,5 +55,69 @@ public abstract class BaseModule {
         {
             stack.setTagCompound(new NBTTagCompound());
         }
+    }
+
+
+    public abstract boolean tick(MachineFrameEntity entity, ItemStack module);
+    public abstract boolean isDone(ItemStack module);
+    public abstract void reset(ItemStack module);
+
+    public void saveNBT(ItemStack stack) {
+        NBTTagCompound tag = stack.getTagCompound();
+        tag.setInteger("progress", progress);
+    }
+    public void loadNBT(ItemStack stack) {
+        NBTTagCompound tag = stack.getTagCompound();
+        progress= tag.getInteger("progress");
+    }
+
+    public boolean validateInput(MachineFrameEntity entity) {
+        switch (requires())
+        {
+            case Any:
+                if (entity.executionStack.size() > 0)
+                    return true;
+                break;
+            case None:
+                if (entity.executionStack.empty())
+                    return true;
+                break;
+            case ItemStack:
+                if (!entity.executionStack.empty() && entity.executionStack.peek() instanceof ItemStack)
+                    return true;
+                break;
+            case BlockPos:
+                if (!entity.executionStack.empty() && entity.executionStack.peek() instanceof BlockPos)
+                    return true;
+                break;
+            case EntityLiving:
+                if (!entity.executionStack.empty() && entity.executionStack.peek() instanceof EntityLiving)
+                    return true;
+                break;
+        }
+        return false;
+    }
+
+    public EnumActionResult onUse(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ){
+        return EnumActionResult.PASS;
+    }
+
+    protected void writeBlockPos(NBTTagCompound tag, String name, BlockPos pos) {
+        if (pos == null) {
+            tag.setTag(name, new NBTTagCompound());
+            return;
+        }
+        NBTTagCompound posTag = new NBTTagCompound();
+        posTag.setInteger("x", pos.getX());
+        posTag.setInteger("y", pos.getY());
+        posTag.setInteger("z", pos.getZ());
+        tag.setTag(name, posTag);
+    }
+
+    protected BlockPos readBlockPos(NBTTagCompound tag, String name) {
+        NBTTagCompound posTag = tag.getCompoundTag(name);
+        if (posTag.hasNoTags())
+            return null;
+        return new BlockPos(posTag.getInteger("x"), posTag.getInteger("y"), posTag.getInteger("z"));
     }
 }

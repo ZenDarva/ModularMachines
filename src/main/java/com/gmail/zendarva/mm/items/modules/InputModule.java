@@ -1,5 +1,10 @@
 package com.gmail.zendarva.mm.items.modules;
 
+import com.gmail.zendarva.mm.entities.MachineFrameEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+
 public class InputModule extends BaseModule {
 
     public InputModule()
@@ -9,12 +14,23 @@ public class InputModule extends BaseModule {
     }
 
     @Override
-    public int rfPerTick() {
-        return 0;
+    public boolean tick(MachineFrameEntity entity, ItemStack module) {
+        IItemHandler handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
+        ItemStack stack = handler.getStackInSlot(0);
+        if (stack == ItemStack.EMPTY)
+            return false;
+        ItemStack newStack =handler.extractItem(0,1,false);
+        entity.executionStack.push(newStack);
+        return true;
     }
 
     @Override
-    public int progress() {
-        return 0;
+    public boolean isDone(ItemStack module) {
+        return true;
+    }
+
+    @Override
+    public void reset(ItemStack module) {
+
     }
 }

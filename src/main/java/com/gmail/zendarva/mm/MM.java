@@ -1,5 +1,6 @@
 package com.gmail.zendarva.mm;
 
+import com.gmail.zendarva.mm.network.PacketHandler;
 import com.gmail.zendarva.mm.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -15,6 +16,8 @@ import java.io.File;
 public class MM {
     public static final String VERSION = "1.0";
     public static final String MODID = "modularmachines";
+    public static final PacketHandler packetHandler = new PacketHandler();
+
 
     public static File configDir;
     @SidedProxy(clientSide = "com.gmail.zendarva.mm.proxy.ClientProxy", serverSide = "com.gmail.zendarva.mm.proxy.CommonProxy")

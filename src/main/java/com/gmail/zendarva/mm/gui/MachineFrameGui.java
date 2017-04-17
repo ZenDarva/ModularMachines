@@ -5,6 +5,8 @@ import com.gmail.zendarva.mm.OutputDir;
 import com.gmail.zendarva.mm.entities.MachineFrameEntity;
 import com.gmail.zendarva.mm.items.modules.BaseModule;
 import com.gmail.zendarva.mm.items.modules.ModuleManager;
+import com.gmail.zendarva.mm.network.OutputDirUpdatePacket;
+import com.gmail.zendarva.mm.network.PacketHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -38,9 +40,7 @@ public class MachineFrameGui extends GuiContainer {
                 if (entity.internalGrid.getStackInSlot(index) != ItemStack.EMPTY)
                 {
                     ItemStack stack = entity.internalGrid.getStackInSlot(index);
-                    BaseModule module = ModuleManager.getInstance().getModule(stack);
-                    buttonData.get(index).success=module.getSuccess(stack);
-                    buttonData.get(index).failure=module.getFailure(stack);
+                    BaseModule module = ModuleManager.instance().getModule(stack);
                 }
                 index++;
             }
@@ -99,8 +99,6 @@ public class MachineFrameGui extends GuiContainer {
         private final MachineFrameEntity owner;
         private final int slotId;
         Rectangle rect;
-        protected OutputDir success = OutputDir.none;
-        protected OutputDir failure= OutputDir.none;
 
         public ButtonLocation(int x, int y, MachineFrameEntity owner, int slotId)
         {
@@ -120,9 +118,10 @@ public class MachineFrameGui extends GuiContainer {
         public void setOutput(int x, int y)
         {
             ItemStack stack =owner.internalGrid.getStackInSlot(slotId);
+            BaseModule module = ModuleManager.instance().getModule(stack);
             if (stack == ItemStack.EMPTY)
                 return;
-            BaseModule module = ModuleManager.getInstance().getModule(stack);
+
             OutputDir dir= OutputDir.none;
             if (x >= rect.x && x<= rect.x+2)
                 dir = OutputDir.left;
@@ -133,26 +132,32 @@ public class MachineFrameGui extends GuiContainer {
             if (y >= rect.y + rect.height-2 && y <= rect.y+rect.height)
                 dir = OutputDir.down;
 
-            if (success == dir) {
-                failure = dir;
+            if (module.getSuccess(stack) == dir) {
                 module.setFailure(stack,dir);
-                success = OutputDir.none;
+                PacketHandler.INSTANCE.sendToServer(new OutputDirUpdatePacket(slotId,dir,false,entity.getPos()));
                 module.setSuccess(stack,OutputDir.none);
+                PacketHandler.INSTANCE.sendToServer(new OutputDirUpdatePacket(slotId,OutputDir.none,true,entity.getPos()));
+                entity.markDirty();
                 return;
             }
-            if (failure == dir)
+            if (module.getFailure(stack) == dir)
             {
-                failure = OutputDir.none;
                 module.setFailure(stack,OutputDir.none);
+                PacketHandler.INSTANCE.sendToServer(new OutputDirUpdatePacket(slotId,dir,false,entity.getPos()));
                 return;
             }
-            success = dir;
             module.setSuccess(stack,dir);
+
+            PacketHandler.INSTANCE.sendToServer(new OutputDirUpdatePacket(slotId,dir,true,entity.getPos()));
         }
 
         public void draw(GuiContainer container)
         {
-            switch(success)
+            ItemStack stack =owner.internalGrid.getStackInSlot(slotId);
+            if (stack== ItemStack.EMPTY)
+                return;
+            BaseModule module = ModuleManager.instance().getModule(stack);
+            switch(module.getSuccess(stack))
             {
                 case up:
                     container.drawTexturedModalRect(rect.x,rect.y,87,243,23,2);
@@ -167,7 +172,7 @@ public class MachineFrameGui extends GuiContainer {
                     container.drawTexturedModalRect(rect.x+rect.width-2,rect.y,79,233,2,23);
                     break;
             }
-            switch(failure){
+            switch(module.getFailure(stack)){
                 case up:
                     container.drawTexturedModalRect(rect.x,rect.y,87,240,23,2);
                     break;

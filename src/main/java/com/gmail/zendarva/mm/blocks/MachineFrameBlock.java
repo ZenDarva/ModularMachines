@@ -18,6 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -128,6 +129,7 @@ public class MachineFrameBlock extends Block implements ITileEntityProvider {
             world.setBlockState(pos, state.withProperty(stateProperty, false),2);
         else
             world.setBlockState(pos, state.withProperty(stateProperty, true),2);
+
     }
 
     @Override
