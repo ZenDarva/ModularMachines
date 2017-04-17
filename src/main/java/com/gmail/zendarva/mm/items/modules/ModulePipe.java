@@ -14,8 +14,8 @@ public class ModulePipe extends BaseModule {
     }
 
     @Override
-    public IOType requires() {
-        return IOType.Any;
+    public IOType[] requires() {
+        return new IOType[]{IOType.ANY};
     }
 
     @Override

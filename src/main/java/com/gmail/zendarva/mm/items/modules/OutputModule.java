@@ -11,8 +11,8 @@ import net.minecraftforge.items.IItemHandler;
  */
 public class OutputModule extends BaseModule {
     @Override
-    public IOType requires() {
-        return IOType.ItemStack;
+    public IOType[] requires() {
+        return new IOType[]{IOType.ITEMSTACK};
     }
 
     public OutputModule() {

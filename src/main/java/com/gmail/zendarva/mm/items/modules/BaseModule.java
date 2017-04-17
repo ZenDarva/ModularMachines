@@ -12,14 +12,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-
 public abstract class BaseModule {
-    public IOType requires(){ return IOType.None;};
-    public IOType provides(){ return IOType.None;};
+    public IOType[] requires(){ return new IOType[]{IOType.ANY};};
     public int rfPerTick;
     public int progress;
     public String unlocalizedName;
+    public boolean blocking = false;
 
 
 
@@ -72,30 +70,30 @@ public abstract class BaseModule {
     }
 
     public boolean validateInput(MachineFrameEntity entity) {
-        switch (requires())
+        if (entity.executionStack.size() < requires().length)
+            return false;
+        int count = 0;
+        for (IOType type : requires())
         {
-            case Any:
-                if (entity.executionStack.size() > 0)
-                    return true;
-                break;
-            case None:
-                if (entity.executionStack.empty())
-                    return true;
-                break;
-            case ItemStack:
-                if (!entity.executionStack.empty() && entity.executionStack.peek() instanceof ItemStack)
-                    return true;
-                break;
-            case BlockPos:
-                if (!entity.executionStack.empty() && entity.executionStack.peek() instanceof BlockPos)
-                    return true;
-                break;
-            case EntityLiving:
-                if (!entity.executionStack.empty() && entity.executionStack.peek() instanceof EntityLiving)
-                    return true;
-                break;
+            switch(type){
+                case ANY:
+                    break;
+                case BLOCKPOS:
+                    if (!(entity.executionStack.get(count) instanceof BlockPos))
+                        return false;
+                    break;
+                case ENTITYLIVING:
+                    if (!(entity.executionStack.get(count) instanceof EntityLiving))
+                        return false;
+                        break;
+                case ITEMSTACK:
+                    if (!(entity.executionStack.get(count) instanceof ItemStack))
+                        return false;
+                        break;
+            }
+            count++;
         }
-        return false;
+        return true;
     }
 
     public EnumActionResult onUse(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ){

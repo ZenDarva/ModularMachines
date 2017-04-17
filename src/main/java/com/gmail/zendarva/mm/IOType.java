@@ -1,11 +1,12 @@
 package com.gmail.zendarva.mm;
 
-public enum IOType {
-    ItemStack,
-    FluidStack,
-    BlockPos,
-    EntityLiving,
-    None,
-    Any,
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.math.BlockPos;
 
+public enum IOType {
+    ITEMSTACK,
+    BLOCKPOS,
+    ENTITYLIVING,
+    ANY;
 }
+

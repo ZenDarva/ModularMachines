@@ -5,6 +5,7 @@ import com.gmail.zendarva.mm.blocks.MachineFrameBlock;
 import com.gmail.zendarva.mm.items.modules.BaseModule;
 import com.gmail.zendarva.mm.items.modules.ModuleManager;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -89,6 +90,7 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
 
         ItemStack stack = internalGrid.getStackInSlot(executionPointer);
         if (stack == ItemStack.EMPTY) {
+            clearStack();
             executionPointer = 0;
             return;
         }
@@ -100,7 +102,7 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
             movePointer(module.getSuccess(stack));
             module.reset(stack);
         }
-        else if(!result) {
+        else if(!result && !module.blocking) {
             movePointer(module.getFailure(stack));
             module.reset(stack);
         }
@@ -124,11 +126,26 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
             case none:
                 executionPointer = 0;
         }
-        if (executionPointer < 0 || executionPointer > 24)
-            executionPointer =0;
+        if (executionPointer < 0 || executionPointer > 24) {
+            clearStack();
+            executionPointer = 0;
+        }
     }
 
     private boolean isRunning() {
         return world.getBlockState(getPos()).getValue(MachineFrameBlock.stateProperty).booleanValue();
+    }
+
+
+    private void clearStack()
+    {
+        while(!executionStack.isEmpty())
+        {
+            Object obj = executionStack.pop();
+            if (obj instanceof ItemStack) {
+                EntityItem entity = new EntityItem(world,pos.getX(),pos.getY()+1,pos.getZ(), (ItemStack) obj);
+                world.spawnEntity(entity);
+            }
+        }
     }
 }

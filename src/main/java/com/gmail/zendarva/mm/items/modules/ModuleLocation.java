@@ -21,11 +21,6 @@ public class ModuleLocation extends BaseModule {
     }
 
     @Override
-    public IOType requires() {
-        return IOType.None;
-    }
-
-    @Override
     public boolean tick(MachineFrameEntity entity, ItemStack module) {
         if (entity.getWorld().isRemote)
             return true;

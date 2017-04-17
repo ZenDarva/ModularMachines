@@ -5,7 +5,6 @@ import com.gmail.zendarva.mm.entities.MachineFrameEntity;
 import com.gmail.zendarva.mm.recipie.CrusherRecipie;
 import com.gmail.zendarva.mm.recipie.CrusherRecipies;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -14,8 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 public class ModuleCrusher extends BaseModule {
 
     @Override
-    public IOType requires() {
-        return IOType.ItemStack;
+    public IOType[] requires() {
+        return new IOType[]{IOType.ITEMSTACK};
     }
 
     public ModuleCrusher(){

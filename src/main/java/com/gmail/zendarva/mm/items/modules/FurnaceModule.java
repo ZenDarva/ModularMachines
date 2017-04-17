@@ -12,8 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 public class FurnaceModule extends BaseModule {
 
     @Override
-    public IOType requires() {
-        return IOType.ItemStack;
+    public IOType[] requires() {
+        return new IOType[]{IOType.ITEMSTACK};
     }
 
     public FurnaceModule(){

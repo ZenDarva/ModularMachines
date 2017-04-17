@@ -14,12 +14,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         ModItems.init();
-        ModRecipies.init();
+
         NetworkRegistry.INSTANCE.registerGuiHandler(MM.instance,new GuiProxy());
         PacketHandler.registerMessages("MM");
     }
 
     public void init(FMLInitializationEvent e) {
+        ModRecipies.init();
     }
 
     public void postInit(FMLPostInitializationEvent e) {

@@ -2,7 +2,6 @@ package com.gmail.zendarva.mm.items.modules;
 
 import com.gmail.zendarva.mm.IOType;
 import com.gmail.zendarva.mm.entities.MachineFrameEntity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -20,8 +19,8 @@ public class ModuleItemFinder extends BaseModule {
     }
 
     @Override
-    public IOType requires() {
-        return IOType.BlockPos;
+    public IOType[] requires() {
+        return new IOType[]{IOType.BLOCKPOS};
     }
 
     @Override

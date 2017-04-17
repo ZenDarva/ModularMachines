@@ -1,8 +1,10 @@
 package com.gmail.zendarva.mm.items.modules;
 
+import com.gmail.zendarva.mm.IOType;
 import com.gmail.zendarva.mm.entities.MachineFrameEntity;
 import jdk.nashorn.internal.ir.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -19,6 +21,11 @@ public class ModuleBreak extends BaseModule {
     }
 
     @Override
+    public IOType[] requires() {
+        return new IOType[]{IOType.BLOCKPOS};
+    }
+
+    @Override
     public boolean tick(MachineFrameEntity entity, ItemStack module) {
         BlockPos target = readBlockPos(module.getTagCompound(),"target");
         if (target == null) {
@@ -27,12 +34,16 @@ public class ModuleBreak extends BaseModule {
         }
 
         World world = entity.getWorld();
+        if (world.getBlockState(target).getBlock()== Blocks.AIR || world.getBlockState(target).getMaterial().isLiquid()) {
+            this.progress=101;
+            return true;
+        }
         world.sendBlockBreakProgress(1,target,progress/10);
         progress+=2;
         if (progress >= 100)
         {
             List<ItemStack> drops = world.getBlockState(target).getBlock().getDrops(world,target,world.getBlockState(target),0);
-            world.setBlockToAir(target);
+            world.destroyBlock(target,false);
             drops.forEach(f->{
                 entity.executionStack.push(f.copy());
             });

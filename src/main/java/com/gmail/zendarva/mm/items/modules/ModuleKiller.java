@@ -15,8 +15,8 @@ public class ModuleKiller extends BaseModule {
     }
 
     @Override
-    public IOType requires() {
-        return IOType.EntityLiving;
+    public IOType[] requires() {
+        return new IOType[]{IOType.ENTITYLIVING};
     }
 
     @Override
