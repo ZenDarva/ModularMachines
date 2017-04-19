@@ -1,6 +1,7 @@
 package com.gmail.zendarva.mm.gui;
 
 import com.gmail.zendarva.mm.blocks.MachineFrameBlock;
+import com.gmail.zendarva.mm.container.FilterContainer;
 import com.gmail.zendarva.mm.container.MachineFrameContainer;
 import com.gmail.zendarva.mm.entities.MachineFrameEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +25,10 @@ public class GuiProxy implements IGuiHandler {
                 if (entity instanceof MachineFrameEntity){
                     return new MachineFrameContainer(player.inventory, (MachineFrameEntity) entity);
                 }
+                break;
+            case FilterGui.GUI_ID:
+                return new FilterContainer(player.inventory, player.getHeldItemMainhand() );
+
 
 
         }
@@ -40,8 +45,9 @@ public class GuiProxy implements IGuiHandler {
                 if (entity instanceof MachineFrameEntity){
                     return new MachineFrameGui((MachineFrameEntity) entity, new MachineFrameContainer(player.inventory, (MachineFrameEntity) entity));
                 }
-
-
+                break;
+            case FilterGui.GUI_ID:
+                return new FilterGui(new FilterContainer(player.inventory,player.getHeldItemMainhand()));
         }
         return null;
     }

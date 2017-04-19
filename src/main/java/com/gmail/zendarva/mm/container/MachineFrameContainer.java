@@ -35,7 +35,7 @@ public class MachineFrameContainer extends Container {
                 for (int col = 0; col < 9; ++col) {
                     int x = startX + col * 18;
                     int y = row * 18 + startY;
-                    this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 10, x, y));
+                    this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, x, y));
                 }
             }
 

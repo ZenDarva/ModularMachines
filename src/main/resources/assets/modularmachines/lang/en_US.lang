@@ -10,3 +10,5 @@ locationmodule.name=Location Module
 mobfindermodule.name=Mob Finder Module
 pipemodule.name=Pipe Module
 placemodule.name=Place Module
+irondust.name=Iron Dust
+golddust.name=Gold Dust

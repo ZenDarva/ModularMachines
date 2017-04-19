@@ -3,12 +3,15 @@ package com.gmail.zendarva.mm.items.modules;
 import com.gmail.zendarva.mm.IOType;
 import com.gmail.zendarva.mm.OutputDir;
 import com.gmail.zendarva.mm.entities.MachineFrameEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -90,6 +93,10 @@ public abstract class BaseModule {
                     if (!(entity.executionStack.get(count) instanceof ItemStack))
                         return false;
                         break;
+                case ENTITY:
+                    if (!(entity.executionStack.get(count) instanceof Entity))
+                        return false;
+                    break;
             }
             count++;
         }
@@ -99,6 +106,7 @@ public abstract class BaseModule {
     public EnumActionResult onUse(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ){
         return EnumActionResult.PASS;
     }
+
 
     protected void writeBlockPos(NBTTagCompound tag, String name, BlockPos pos) {
         if (pos == null) {
@@ -117,5 +125,9 @@ public abstract class BaseModule {
         if (posTag.hasNoTags())
             return null;
         return new BlockPos(posTag.getInteger("x"), posTag.getInteger("y"), posTag.getInteger("z"));
+    }
+
+    public ActionResult<ItemStack> onRightClick(ItemStack stack, EntityPlayer playerIn, World worldIn, EnumHand handIn) {
+        return new ActionResult(EnumActionResult.PASS,stack);
     }
 }

@@ -87,5 +87,10 @@ public class Module extends Item {
         return module.onUse(stack, player, worldIn, pos,facing, hitX, hitY, hitZ);
     }
 
-
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        ItemStack stack = playerIn.getHeldItemMainhand();
+        BaseModule module = ModuleManager.instance().getModule(stack);
+        return module.onRightClick(stack, playerIn, worldIn, handIn);
+    }
 }

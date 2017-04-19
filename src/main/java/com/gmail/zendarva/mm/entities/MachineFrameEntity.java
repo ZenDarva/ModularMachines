@@ -1,5 +1,7 @@
 package com.gmail.zendarva.mm.entities;
 
+import com.gmail.zendarva.mm.ModItems;
+import com.gmail.zendarva.mm.ModularEnergyStorage;
 import com.gmail.zendarva.mm.OutputDir;
 import com.gmail.zendarva.mm.blocks.MachineFrameBlock;
 import com.gmail.zendarva.mm.items.modules.BaseModule;
@@ -8,12 +10,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -24,13 +30,35 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
 
     public Stack<Object> executionStack = new Stack<>();
     private int executionPointer = 0;
+    public ModularEnergyStorage energyStorage = new ModularEnergyStorage(1000000){
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            MachineFrameEntity.this.markDirty();
+            return super.receiveEnergy(maxReceive,simulate);
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            MachineFrameEntity.this.markDirty();
+            return super.extractEnergy(maxExtract, simulate);
+        }
+    };
+
 
     ItemStackHandler accessableItems = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
             MachineFrameEntity.this.markDirty();
         }
+
     };
+
+    @Override
+    public void markDirty() {
+        if (!this.getWorld().isRemote)
+            world.notifyBlockUpdate(pos,world.getBlockState(pos),world.getBlockState(pos),3);
+        super.markDirty();
+    }
 
     public ItemStackHandler internalGrid = new ItemStackHandler(25) {
         @Override
@@ -42,9 +70,37 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
     public MachineFrameEntity() {
     }
 
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("energy",energyStorage.getEnergyStored());
+        SPacketUpdateTileEntity packet = new SPacketUpdateTileEntity(pos,1,tag);
+        return packet;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tag = super.getUpdateTag();
+        tag.setInteger("energy",energyStorage.getEnergyStored());
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag) {
+        this.energyStorage.setEnergy(tag.getInteger("energy"));
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        this.energyStorage.setEnergy(pkt.getNbtCompound().getInteger("energy"));
+    }
+
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return true;
+        if (capability == CapabilityEnergy.ENERGY)
             return true;
         return hasCapability(capability, facing);
     }
@@ -54,6 +110,8 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return (T) accessableItems;
+        if (capability == CapabilityEnergy.ENERGY)
+            return (T) energyStorage;
         return getCapability(capability, facing);
     }
 
@@ -64,6 +122,8 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
             accessableItems.deserializeNBT((NBTTagCompound) compound.getTag("items"));
         if (compound.hasKey("grid"))
             internalGrid.deserializeNBT((NBTTagCompound) compound.getTag("grid"));
+        if (compound.hasKey("energy"))
+            energyStorage.receiveEnergy(compound.getInteger("energy"),false);
     }
 
     @Override
@@ -71,6 +131,7 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
         super.writeToNBT(compound);
         compound.setTag("items", accessableItems.serializeNBT());
         compound.setTag("grid", internalGrid.serializeNBT());
+        compound.setInteger("energy", energyStorage.getEnergyStored());
         return compound;
     }
 

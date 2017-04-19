@@ -7,6 +7,8 @@ public enum IOType {
     ITEMSTACK,
     BLOCKPOS,
     ENTITYLIVING,
+    ENTITY,
     ANY;
+
 }
 

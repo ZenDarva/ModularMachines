@@ -83,7 +83,28 @@ public class MachineFrameGui extends GuiContainer {
             }
         }
         buttonData.values().forEach(f->f.draw(this));
+
+        drawTexturedModalRect(guiLeft + 200, guiTop+ startY,229,1,16,64);
+        drawEnergy();
+        drawTexturedModalRect(guiLeft + 200, guiTop+ startY,229,65,16,64);
+
+        if (mouseX >guiLeft + 200 && mouseX < guiLeft+200+216 &&
+                mouseY > guiTop+startY && mouseY < guiTop+startY+64)
+        {
+            this.drawHoveringText("Energy: " + entity.energyStorage.getEnergyStored(), mouseX-15, mouseY-5);
+        }
     }
+
+    private void drawEnergy(){
+        float energyPercent = (float)entity.energyStorage.getEnergyStored() / (float)entity.energyStorage.getMaxEnergyStored();
+        int energy = (int)(energyPercent * 64);
+
+        //drawRect(guiLeft+200, guiTop+startY+(64-energy),guiLeft+216,guiTop+startY+64,0xff00000);
+        drawTexturedModalRect(guiLeft+200,guiTop+startY+(64-energy),229,129+(64-energy),16,energy);
+
+    }
+
+
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
