@@ -1,6 +1,6 @@
 tile.modularmachines.machineframe.name=Modular Framework
 inputmodule.name=Input Module
-furnacemodule.name=Furnace Module
+furnacemodule.name=Furnace Modulew
 blockmodule.name=Block Module
 breakmodule.name=Break Module
 crushermodule.name=Crusher Module
@@ -12,3 +12,8 @@ pipemodule.name=Pipe Module
 placemodule.name=Place Module
 irondust.name=Iron Dust
 golddust.name=Gold Dust
+outputmodule.name=Output Module
+generatormodule.name=Generator Module
+sendenergymodule.name=Send Energy Module
+entityfindermodule.name=Entity Finder Module
+teleportmodule.name=Teleport Module

@@ -1,6 +1,5 @@
 package com.gmail.zendarva.mm.entities;
 
-import com.gmail.zendarva.mm.ModItems;
 import com.gmail.zendarva.mm.ModularEnergyStorage;
 import com.gmail.zendarva.mm.OutputDir;
 import com.gmail.zendarva.mm.blocks.MachineFrameBlock;
@@ -19,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -30,6 +28,7 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
 
     public Stack<Object> executionStack = new Stack<>();
     private int executionPointer = 0;
+
     public ModularEnergyStorage energyStorage = new ModularEnergyStorage(1000000){
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
@@ -74,26 +73,27 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("energy",energyStorage.getEnergyStored());
+        writeToNBT(tag);
         SPacketUpdateTileEntity packet = new SPacketUpdateTileEntity(pos,1,tag);
         return packet;
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {
-        NBTTagCompound tag = super.getUpdateTag();
-        tag.setInteger("energy",energyStorage.getEnergyStored());
-        return tag;
+    public void handleUpdateTag(NBTTagCompound tag) {
+        this.readFromNBT(tag);
     }
 
     @Override
-    public void handleUpdateTag(NBTTagCompound tag) {
-        this.energyStorage.setEnergy(tag.getInteger("energy"));
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tag = new NBTTagCompound();
+        writeToNBT(tag);
+        return tag;
+
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        this.energyStorage.setEnergy(pkt.getNbtCompound().getInteger("energy"));
+        this.readFromNBT(pkt.getNbtCompound());
     }
 
     @Override
@@ -123,7 +123,7 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
         if (compound.hasKey("grid"))
             internalGrid.deserializeNBT((NBTTagCompound) compound.getTag("grid"));
         if (compound.hasKey("energy"))
-            energyStorage.receiveEnergy(compound.getInteger("energy"),false);
+            energyStorage.setEnergy(compound.getInteger("energy"));
     }
 
     @Override
