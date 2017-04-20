@@ -15,10 +15,13 @@ public class FurnaceModule extends BaseModule {
     public IOType[] requires() {
         return new IOType[]{IOType.ITEMSTACK};
     }
+    public IOType[] provides() {
+        return new IOType[]{IOType.ITEMSTACK};
+    }
 
     public FurnaceModule(){
         this.unlocalizedName="furnacemodule";
-
+        this.rfPerTick=20;
     }
     @Override
     public boolean tick(MachineFrameEntity entity, ItemStack module) {

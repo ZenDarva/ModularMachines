@@ -49,6 +49,7 @@ public class ModItems {
     {
         machineFrameBlock.initModel();
         module.initModel();
+        dust.initModel();
     }
 
 }

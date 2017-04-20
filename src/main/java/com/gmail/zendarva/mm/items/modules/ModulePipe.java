@@ -13,10 +13,6 @@ public class ModulePipe extends BaseModule {
         this.unlocalizedName="pipemodule";
     }
 
-    @Override
-    public IOType[] requires() {
-        return new IOType[]{IOType.ANY};
-    }
 
     @Override
     public boolean tick(MachineFrameEntity entity, ItemStack module) {

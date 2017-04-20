@@ -16,7 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class BaseModule {
-    public IOType[] requires(){ return new IOType[]{IOType.ANY};};
+    public IOType[] requires(){ return new IOType[0];};
+    public IOType[] provides() { return new IOType[0];}
     public int rfPerTick;
     public int progress;
     public String unlocalizedName;

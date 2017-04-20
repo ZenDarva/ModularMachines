@@ -17,11 +17,15 @@ import java.util.List;
 public class ModuleEntityFinder extends BaseModule {
     public ModuleEntityFinder() {
         this.unlocalizedName="entityfindermodule";
+        this.rfPerTick=40;
     }
 
     @Override
     public IOType[] requires() {
         return new IOType[]{IOType.BLOCKPOS};
+    }
+    public IOType[] provides() {
+        return new IOType[]{IOType.ENTITY};
     }
 
     @Override

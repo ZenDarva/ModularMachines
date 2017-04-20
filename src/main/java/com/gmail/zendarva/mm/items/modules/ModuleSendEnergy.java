@@ -20,6 +20,7 @@ public class ModuleSendEnergy extends BaseModule {
 
     public ModuleSendEnergy() {
         this.unlocalizedName="sendenergymodule";
+        this.rfPerTick=10;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.gmail.zendarva.mm.items.modules;
 
+import com.gmail.zendarva.mm.IOType;
 import com.gmail.zendarva.mm.entities.MachineFrameEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -7,6 +8,9 @@ import net.minecraftforge.items.IItemHandler;
 
 public class InputModule extends BaseModule {
 
+    public IOType[] provides() {
+        return new IOType[]{IOType.ITEMSTACK};
+    }
     public InputModule()
     {
         super();

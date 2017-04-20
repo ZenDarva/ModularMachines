@@ -16,11 +16,15 @@ import java.util.List;
 public class ModuleItemFinder extends BaseModule {
     public ModuleItemFinder() {
         this.unlocalizedName="itemfindermodule";
+        this.rfPerTick=40;
     }
 
     @Override
     public IOType[] requires() {
         return new IOType[]{IOType.BLOCKPOS};
+    }
+    public IOType[] provides() {
+        return new IOType[]{IOType.ITEMSTACK};
     }
 
     @Override

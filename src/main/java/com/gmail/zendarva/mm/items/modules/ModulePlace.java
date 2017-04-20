@@ -15,6 +15,7 @@ public class ModulePlace extends BaseModule{
     public ModulePlace() {
         this.unlocalizedName="placemodule";
         this.blocking = true;
+        this.rfPerTick=100;
     }
 
     @Override

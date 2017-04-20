@@ -1,5 +1,6 @@
 package com.gmail.zendarva.mm.items.modules;
 
+import com.gmail.zendarva.mm.IOType;
 import com.gmail.zendarva.mm.entities.MachineFrameEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,9 @@ import net.minecraft.world.World;
  * Created by James on 4/16/2017.
  */
 public class ModuleBlock extends BaseModule{
+    public IOType[] provides() {
+        return new IOType[]{IOType.BLOCKPOS};
+    }
     public ModuleBlock() {
         this.unlocalizedName="blockmodule";
     }

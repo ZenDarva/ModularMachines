@@ -16,9 +16,13 @@ public class ModuleCrusher extends BaseModule {
     public IOType[] requires() {
         return new IOType[]{IOType.ITEMSTACK};
     }
+    public IOType[] provides() {
+        return new IOType[]{IOType.ITEMSTACK};
+    }
 
     public ModuleCrusher(){
         this.unlocalizedName="crushermodule";
+        this.rfPerTick=40;
     }
     @Override
     public boolean tick(MachineFrameEntity entity, ItemStack module) {

@@ -16,7 +16,7 @@ import java.util.Random;
 public class ModuleTeleport extends BaseModule {
 
     public ModuleTeleport() {
-        this.unlocalizedName="teleportmodule";
+        this.unlocalizedName="teleportmodule";this.rfPerTick=100;
     }
 
     @Override

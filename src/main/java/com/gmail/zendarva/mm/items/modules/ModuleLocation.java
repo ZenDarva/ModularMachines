@@ -18,8 +18,11 @@ import net.minecraft.world.World;
 public class ModuleLocation extends BaseModule {
     public ModuleLocation() {
         this.unlocalizedName = "locationmodule";
+        this.rfPerTick=10;
     }
-
+    public IOType[] provides() {
+        return new IOType[]{IOType.BLOCKPOS};
+    }
     @Override
     public boolean tick(MachineFrameEntity entity, ItemStack module) {
         if (entity.getWorld().isRemote)

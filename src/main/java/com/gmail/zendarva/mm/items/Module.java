@@ -1,9 +1,9 @@
 package com.gmail.zendarva.mm.items;
 
+import com.gmail.zendarva.mm.IOType;
 import com.gmail.zendarva.mm.MM;
 import com.gmail.zendarva.mm.items.modules.BaseModule;
 import com.gmail.zendarva.mm.items.modules.ModuleManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -20,9 +20,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 
 public class Module extends Item {
 
@@ -35,6 +34,24 @@ public class Module extends Item {
         this.setUnlocalizedName("basemodule");
         setRegistryName("basemodule");
         GameRegistry.register(this);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, playerIn, tooltip, advanced);
+        BaseModule module = ModuleManager.instance().getModule(stack);
+        tooltip.add("Provides: ");
+        for(IOType type : module.provides())
+        {
+            tooltip.add("   " + type.name());
+        }
+        tooltip.add("Requires: ");
+        for(IOType type : module.requires())
+        {
+            tooltip.add("   " + type.name());
+        }
+        if (module.rfPerTick > 0)
+        tooltip.add("Rf/t: "+ module.rfPerTick);
     }
 
     @Override

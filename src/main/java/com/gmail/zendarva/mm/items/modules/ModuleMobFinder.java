@@ -16,11 +16,15 @@ import java.util.List;
 public class ModuleMobFinder extends BaseModule {
     public ModuleMobFinder() {
         this.unlocalizedName="mobfindermodule";
+        this.rfPerTick=40;
     }
 
     @Override
     public IOType[] requires() {
         return new IOType[]{IOType.BLOCKPOS};
+    }
+    public IOType[] provides() {
+        return new IOType[]{IOType.ENTITYLIVING};
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.minecraft.util.DamageSource;
 public class ModuleKiller extends BaseModule {
     public ModuleKiller() {
         this.unlocalizedName ="killermodule";
+        this.rfPerTick=200;
     }
 
     @Override

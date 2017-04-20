@@ -18,11 +18,15 @@ import java.util.List;
 public class ModuleBreak extends BaseModule {
     public ModuleBreak() {
         this.unlocalizedName = "breakmodule";
+        this.rfPerTick=40;
     }
 
     @Override
     public IOType[] requires() {
         return new IOType[]{IOType.BLOCKPOS};
+    }
+    public IOType[] provides() {
+        return new IOType[]{IOType.ITEMSTACK};
     }
 
     @Override
