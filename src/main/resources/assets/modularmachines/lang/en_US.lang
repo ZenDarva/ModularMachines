@@ -17,3 +17,4 @@ generatormodule.name=Generator Module
 sendenergymodule.name=Send Energy Module
 entityfindermodule.name=Entity Finder Module
 teleportmodule.name=Teleport Module
+moduleframe.name=Module Frame

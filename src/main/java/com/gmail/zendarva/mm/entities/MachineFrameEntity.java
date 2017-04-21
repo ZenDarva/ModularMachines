@@ -157,11 +157,11 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
         }
 
         BaseModule module = ModuleManager.instance().getModule(stack);
-        if (this.energyStorage.getEnergyStored() > module.rfPerTick)
+        if (this.energyStorage.getEnergyStored() >= module.rfPerTick)
         {
             energyStorage.extractEnergy(module.rfPerTick,false);
         }
-        else
+        else if (stack.getItemDamage() != 16)
             return;
         boolean result = module.tick(this,stack);
 

@@ -43,6 +43,10 @@ public class ModuleBlock extends BaseModule{
 
     @Override
     public EnumActionResult onUse(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (worldIn.isRemote)
+        {
+            return EnumActionResult.SUCCESS;
+        }
         if (stack.getTagCompound() == null) {
             stack.setTagCompound(new NBTTagCompound());
         }

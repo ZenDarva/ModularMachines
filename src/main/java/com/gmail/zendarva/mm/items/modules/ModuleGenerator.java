@@ -58,6 +58,7 @@ public class ModuleGenerator extends BaseModule {
 
     @Override
     public void reset(ItemStack module) {
+        this.progress = 0;
         this.saveNBT(module,ItemStack.EMPTY,0);
     }
 

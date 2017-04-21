@@ -39,6 +39,7 @@ public class ModItems {
         //ModuleManager.instance().registerModule(15,new ModuleFilter());
         ModuleManager.instance().registerModule(15, new ModuleGenerator());
         ModuleManager.instance().registerModule(16,new ModuleSendEnergy());
+        ModuleManager.instance().registerModule(17, new ModuleNop());
 
         module = new Module();
         dust = new ItemDust();

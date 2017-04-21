@@ -4,8 +4,7 @@ import com.gmail.zendarva.mm.MM;
 import com.gmail.zendarva.mm.ModItems;
 import com.gmail.zendarva.mm.gui.GuiProxy;
 import com.gmail.zendarva.mm.network.PacketHandler;
-import com.gmail.zendarva.mm.recipie.ModRecipies;
-import net.minecraftforge.common.MinecraftForge;
+import com.gmail.zendarva.mm.recipie.ModRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -20,7 +19,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent e) {
-        ModRecipies.init();
+        ModRecipes.init();
     }
 
     public void postInit(FMLPostInitializationEvent e) {

@@ -5,11 +5,11 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by James on 4/16/2017.
  */
-public class CrusherRecipie{
+public class CrusherRecipe {
     public ItemStack input;
     public ItemStack[] output;
 
-    public CrusherRecipie(ItemStack input, ItemStack[] output){
+    public CrusherRecipe(ItemStack input, ItemStack[] output){
         this.input=input;
         this.output=output;
     }

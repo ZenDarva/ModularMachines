@@ -2,8 +2,8 @@ package com.gmail.zendarva.mm.items.modules;
 
 import com.gmail.zendarva.mm.IOType;
 import com.gmail.zendarva.mm.entities.MachineFrameEntity;
-import com.gmail.zendarva.mm.recipie.CrusherRecipie;
-import com.gmail.zendarva.mm.recipie.CrusherRecipies;
+import com.gmail.zendarva.mm.recipie.CrusherRecipe;
+import com.gmail.zendarva.mm.recipie.CrusherRecipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -32,7 +32,7 @@ public class ModuleCrusher extends BaseModule {
                 return false;
             target = (ItemStack) entity.executionStack.peek();
 
-            if (CrusherRecipies.instance().getCrusherResult(target)== null)
+            if (CrusherRecipes.instance().getCrusherResult(target)== null)
                 return false;
             entity.executionStack.pop();
         }
@@ -40,7 +40,7 @@ public class ModuleCrusher extends BaseModule {
         progress++;
         if (progress >= 100)
         {
-            CrusherRecipie recipie = CrusherRecipies.instance().getCrusherResult(target);
+            CrusherRecipe recipie = CrusherRecipes.instance().getCrusherResult(target);
 
             for(ItemStack stack :recipie.output)
             {
