@@ -102,7 +102,7 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
             return true;
         if (capability == CapabilityEnergy.ENERGY)
             return true;
-        return hasCapability(capability, facing);
+        return super.hasCapability(capability, facing);
     }
 
     @Nullable
@@ -112,7 +112,7 @@ public class MachineFrameEntity extends TileEntity implements ITickable {
             return (T) accessableItems;
         if (capability == CapabilityEnergy.ENERGY)
             return (T) energyStorage;
-        return getCapability(capability, facing);
+        return super.getCapability(capability, facing);
     }
 
     @Override
