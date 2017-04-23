@@ -122,6 +122,8 @@ public abstract class BaseModule {
     }
 
     protected BlockPos readBlockPos(NBTTagCompound tag, String name) {
+        if (tag == null)
+            return null;
         NBTTagCompound posTag = tag.getCompoundTag(name);
         if (posTag.hasNoTags())
             return null;
